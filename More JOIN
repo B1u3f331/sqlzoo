@@ -49,6 +49,19 @@ GROUP BY yr
 SELECT title,name FROM casting join movie on movieid= movie.id join actor on actorid=actor.id where movieid in (select movieid from casting where actorid =(select id from actor where name = 'Julie Andrews')) and ord =1
 
 #13
+way1:
+select name from actor join (select actorid,count(ord) as n from casting where ord=1 group by actorid having n>=30) as t on id=t.actorid
 
+way2:
+SELECT name
+    FROM casting JOIN actor
+      ON  actorid = actor.id
+    WHERE ord=1
+    GROUP BY name
+    HAVING COUNT(movieid)>=30
 
+#14
+select title, count(actorid) from movie join casting on id=movieid where yr = 1978 group by title order by count(actorid) desc, title
 
+#15
+select name from actor join casting on id=actorid where movieid in (select movieid from actor join casting on actor.id=casting.actorid where name = 'Art Garfunkel') and name !='Art Garfunkel' group by name 
